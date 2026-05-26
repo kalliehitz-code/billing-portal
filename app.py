@@ -1,3 +1,47 @@
+from flask import Flask
+from flask import render_template
+from flask import request
+from flask import send_file
+
+from pathlib import Path
+
+import pandas as pd
+
+from extractors.electric import extract_electric_bill
+from extractors.electric import create_pretty_excel
+from extractors.electric import OUTPUT_FILE
+
+
+# =========================================================
+# CREATE REQUIRED FOLDERS
+# =========================================================
+
+Path("uploads").mkdir(exist_ok=True)
+Path("outputs").mkdir(exist_ok=True)
+
+
+# =========================================================
+# CREATE FLASK APP
+# =========================================================
+
+app = Flask(__name__)
+
+
+# =========================================================
+# HOME PAGE
+# =========================================================
+
+@app.route("/")
+
+def home():
+
+    return render_template("index.html")
+
+
+# =========================================================
+# UPLOAD + PROCESS
+# =========================================================
+
 @app.route("/upload", methods=["POST"])
 
 def upload_files():
@@ -75,3 +119,13 @@ def upload_files():
         OUTPUT_FILE,
         as_attachment=True
     )
+
+
+# =========================================================
+# RUN APP
+# =========================================================
+
+if __name__ == "__main__":
+
+    app.run(debug=True)
+    
