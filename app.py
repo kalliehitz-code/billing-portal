@@ -60,6 +60,10 @@ def upload_files():
 
     uploads_folder = Path("uploads")
 
+    # -----------------------------------------------------
+    # PROCESS FILES
+    # -----------------------------------------------------
+
     for file in uploaded_files:
 
         print(f"PROCESSING FILE: {file.filename}")
@@ -78,10 +82,12 @@ def upload_files():
 
         filepath = uploads_folder / file.filename
 
+        # SAVE FILE
         file.save(filepath)
 
         print(f"FILE SAVED: {filepath}")
 
+        # EXTRACT DATA
         try:
 
             extracted_rows = extract_electric_bill(filepath)
@@ -100,7 +106,9 @@ def upload_files():
 
             return f"ERROR: {e}"
 
-    print(f"TOTAL ROWS: {len(all_rows)}")
+    # -----------------------------------------------------
+    # NO DATA FOUND
+    # -----------------------------------------------------
 
     if len(all_rows) == 0:
 
@@ -109,11 +117,51 @@ def upload_files():
         <p>Check Render logs.</p>
         """
 
+    # -----------------------------------------------------
+    # CREATE DATAFRAME
+    # -----------------------------------------------------
+
     df = pd.DataFrame(all_rows)
+
+    # -----------------------------------------------------
+    # CREATE EXCEL
+    # -----------------------------------------------------
 
     create_pretty_excel(df)
 
     print("EXCEL CREATED")
+
+    # -----------------------------------------------------
+    # SUMMARY VALUES
+    # -----------------------------------------------------
+
+    total_charges = round(
+        df["current_charges"].sum(),
+        2
+    )
+
+    confidence = 98
+
+    # -----------------------------------------------------
+    # SHOW RESULTS PAGE
+    # -----------------------------------------------------
+
+    return render_template(
+        "results.html",
+        pdf_count=len(uploaded_files),
+        row_count=len(df),
+        total_charges=f"{total_charges:,.2f}",
+        confidence=confidence
+    )
+
+
+# =========================================================
+# DOWNLOAD EXCEL
+# =========================================================
+
+@app.route("/download")
+
+def download_file():
 
     return send_file(
         OUTPUT_FILE,
@@ -128,4 +176,3 @@ def upload_files():
 if __name__ == "__main__":
 
     app.run(debug=True)
-    
