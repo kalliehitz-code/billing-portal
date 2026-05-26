@@ -1,0 +1,342 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+    <title>Billing Automation Portal</title>
+
+    <style>
+
+        body {
+
+            font-family: Arial;
+
+            background: #f4f6f8;
+
+            padding: 40px;
+        }
+
+        .container {
+
+            background: white;
+
+            max-width: 1000px;
+
+            margin: auto;
+
+            padding: 40px;
+
+            border-radius: 10px;
+
+            box-shadow: 0px 0px 15px rgba(0,0,0,0.1);
+        }
+
+        h1 {
+
+            color: #1F4E78;
+        }
+
+        .subtitle {
+
+            color: #666;
+
+            margin-bottom: 30px;
+        }
+
+        .card {
+
+            background: #eef3f8;
+
+            padding: 25px;
+
+            border-radius: 8px;
+
+            margin-top: 20px;
+        }
+
+        button {
+
+            background: #1F4E78;
+
+            color: white;
+
+            border: none;
+
+            padding: 12px 20px;
+
+            border-radius: 5px;
+
+            cursor: pointer;
+
+            margin-top: 10px;
+
+            font-size: 14px;
+        }
+
+        button:hover {
+
+            opacity: 0.9;
+        }
+
+        .success {
+
+            color: #2E7D32;
+
+            font-weight: bold;
+        }
+
+        .stats-grid {
+
+            display: grid;
+
+            grid-template-columns: repeat(2, 1fr);
+
+            gap: 15px;
+
+            margin-top: 20px;
+        }
+
+        .stat-box {
+
+            background: white;
+
+            padding: 20px;
+
+            border-radius: 8px;
+
+            border-left: 5px solid #1F4E78;
+        }
+
+        .stat-title {
+
+            font-size: 13px;
+
+            color: #666;
+        }
+
+        .stat-value {
+
+            font-size: 28px;
+
+            font-weight: bold;
+
+            margin-top: 5px;
+
+            color: #1F4E78;
+        }
+
+        hr {
+
+            border: none;
+
+            border-top: 1px solid #ccc;
+
+            margin-top: 15px;
+
+            margin-bottom: 15px;
+        }
+
+    </style>
+
+</head>
+
+<body>
+
+    <div class="container">
+
+        <h1>Billing Automation Portal</h1>
+
+        <p class="subtitle">
+            Upload electric bill PDFs to generate a formatted Excel extraction report.
+        </p>
+
+        <div class="card">
+
+            <h3>Upload PDF Bills</h3>
+
+            <form
+                action="/upload"
+                method="POST"
+                enctype="multipart/form-data"
+            >
+
+                <input
+                    type="file"
+                    name="pdf_files"
+                    multiple
+                    accept=".pdf"
+                >
+
+                <br><br>
+
+                <button type="submit">
+                    Process Bills
+                </button>
+
+            </form>
+
+        </div>
+
+        {% if uploaded_files %}
+
+        <div class="card">
+
+            <h3>Processing Summary</h3>
+
+            <p class="success">
+                Extraction completed successfully.
+            </p>
+
+            <div class="stats-grid">
+
+                <div class="stat-box">
+
+                    <div class="stat-title">
+                        PDF Files Processed
+                    </div>
+
+                    <div class="stat-value">
+                        {{ total_files }}
+                    </div>
+
+                </div>
+
+                <div class="stat-box">
+
+                    <div class="stat-title">
+                        Service Address Rows
+                    </div>
+
+                    <div class="stat-value">
+                        {{ total_rows }}
+                    </div>
+
+                </div>
+
+                <div class="stat-box">
+
+                    <div class="stat-title">
+                        Missing Account Numbers
+                    </div>
+
+                    <div class="stat-value">
+                        {{ missing_account_numbers }}
+                    </div>
+
+                </div>
+
+                <div class="stat-box">
+
+                    <div class="stat-title">
+                        Missing Billing Dates
+                    </div>
+
+                    <div class="stat-value">
+                        {{ missing_dates }}
+                    </div>
+
+                </div>
+
+                <div class="stat-box">
+
+                    <div class="stat-title">
+                        Missing Addresses
+                    </div>
+
+                    <div class="stat-value">
+                        {{ missing_addresses }}
+                    </div>
+
+                </div>
+
+                <div class="stat-box">
+
+                    <div class="stat-title">
+                        Missing Charges
+                    </div>
+
+                    <div class="stat-value">
+                        {{ missing_charges }}
+                    </div>
+
+                </div>
+
+            </div>
+
+            {% if excel_ready %}
+
+            <br><br>
+
+            <a href="/download">
+
+                <button>
+                    Download Excel Report
+                </button>
+
+            </a>
+
+            {% endif %}
+
+        </div>
+
+        {% endif %}
+
+
+        {% if failed_files %}
+
+        <div class="card">
+
+            <h3>Failed Files</h3>
+
+            {% for item in failed_files %}
+
+                <p>
+
+                    <strong>{{ item.file }}</strong>
+
+                    <br>
+
+                    {{ item.reason }}
+
+                </p>
+
+                <hr>
+
+            {% endfor %}
+
+        </div>
+
+        {% endif %}
+
+
+        {% if warning_files %}
+
+        <div class="card">
+
+            <h3>Extraction Warnings</h3>
+
+            {% for item in warning_files %}
+
+                <p>
+
+                    <strong>{{ item.file }}</strong>
+
+                    <br>
+
+                    {{ item.warnings }}
+
+                </p>
+
+                <hr>
+
+            {% endfor %}
+
+        </div>
+
+        {% endif %}
+
+    </div>
+
+</body>
+
+</html>
