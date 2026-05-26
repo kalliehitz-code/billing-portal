@@ -57,7 +57,7 @@ def upload_files():
     uploads_folder = Path("uploads")
 
     # -----------------------------------------------------
-    # SAVE + PROCESS FILES
+    # PROCESS FILES
     # -----------------------------------------------------
 
     for file in uploaded_files:
@@ -72,19 +72,41 @@ def upload_files():
 
         filepath = uploads_folder / file.filename
 
+        # SAVE FILE
         file.save(filepath)
 
-        extracted_rows = extract_electric_bill(filepath)
+        print(f"SAVED: {filepath}")
+
+        # EXTRACT DATA
+        try:
+
+            extracted_rows = extract_electric_bill(filepath)
+
+            print(f"SUCCESS: {file.filename}")
+
+            print(f"ROWS FOUND: {len(extracted_rows)}")
+
+        except Exception as e:
+
+            print(f"ERROR processing {file.filename}: {e}")
+
+            extracted_rows = []
 
         all_rows.extend(extracted_rows)
 
     # -----------------------------------------------------
-    # NO DATA CHECK
+    # NO DATA FOUND
     # -----------------------------------------------------
 
     if len(all_rows) == 0:
 
-        return "No bill data could be extracted."
+        return """
+        <h2>No bill data could be extracted.</h2>
+
+        <p>
+        Check the Render logs for extraction errors.
+        </p>
+        """
 
     # -----------------------------------------------------
     # CREATE DATAFRAME
@@ -98,8 +120,10 @@ def upload_files():
 
     create_pretty_excel(df)
 
+    print("EXCEL CREATED")
+
     # -----------------------------------------------------
-    # DOWNLOAD FILE
+    # DOWNLOAD OUTPUT
     # -----------------------------------------------------
 
     return send_file(
@@ -115,4 +139,3 @@ def upload_files():
 if __name__ == "__main__":
 
     app.run(debug=True)
-    
