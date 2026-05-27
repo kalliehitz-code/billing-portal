@@ -19,6 +19,8 @@ from extractors.sewer import extract_sewer_bill
 from extractors.trash import extract_trash_bill
 from extractors.generic import extract_generic_bill
 
+from extractors.detector import detect_bill_type
+
 
 # =========================================================
 # CREATE REQUIRED FOLDERS
@@ -101,37 +103,43 @@ def upload_files():
 
         try:
 
-            filename = file.filename.lower()
-
             # =====================================================
-            # DETECT BILL TYPE
+            # AUTO DETECT BILL TYPE
             # =====================================================
 
-            if "electric" in filename:
+            bill_type = detect_bill_type(filepath)
+
+            print(f"BILL TYPE DETECTED: {bill_type}")
+
+            # =====================================================
+            # RUN CORRECT EXTRACTOR
+            # =====================================================
+
+            if bill_type == "electric":
 
                 extracted_rows = extract_electric_bill(filepath)
 
-            elif "water" in filename:
+            elif bill_type == "water":
 
                 extracted_rows = extract_water_bill(filepath)
 
-            elif "gas" in filename:
+            elif bill_type == "gas":
 
                 extracted_rows = extract_gas_bill(filepath)
 
-            elif "phone" in filename:
+            elif bill_type == "phone":
 
                 extracted_rows = extract_phone_bill(filepath)
 
-            elif "internet" in filename:
+            elif bill_type == "internet":
 
                 extracted_rows = extract_internet_bill(filepath)
 
-            elif "sewer" in filename:
+            elif bill_type == "sewer":
 
                 extracted_rows = extract_sewer_bill(filepath)
 
-            elif "trash" in filename:
+            elif bill_type == "trash":
 
                 extracted_rows = extract_trash_bill(filepath)
 

@@ -1,77 +1,115 @@
 import pdfplumber
 
 
-def extract_text(pdf_path):
+# =========================================================
+# READ PDF TEXT
+# =========================================================
 
-    text = ""
+def extract_text(filepath):
 
-    with pdfplumber.open(pdf_path) as pdf:
+    text_parts = []
+
+    with pdfplumber.open(filepath) as pdf:
 
         for page in pdf.pages:
 
-            page_text = page.extract_text()
+            text = page.extract_text() or ""
 
-            if page_text:
-                text += page_text.lower()
+            text_parts.append(text.lower())
 
-    return text
+    return "\n".join(text_parts)
 
 
-def detect_bill_type(pdf_path):
+# =========================================================
+# DETECT BILL TYPE
+# =========================================================
 
-    text = extract_text(pdf_path)
+def detect_bill_type(filepath):
 
-    # ---------------------------------
+    text = extract_text(filepath)
+
+    # -----------------------------------------------------
     # ELECTRIC
-    # ---------------------------------
+    # -----------------------------------------------------
 
-    electric_keywords = [
-        "kwh",
-        "kilowatt",
-        "electric",
-        "meter reading",
-        "energy charge",
-    ]
+    if (
+        "current charges" in text
+        or "kwh" in text
+        or "electric" in text
+    ):
 
-    # ---------------------------------
+        return "electric"
+
+    # -----------------------------------------------------
     # WATER
-    # ---------------------------------
+    # -----------------------------------------------------
 
-    water_keywords = [
-        "water usage",
-        "gallons",
-        "sewer",
-        "water service",
-    ]
+    if (
+        "water usage" in text
+        or "gallons" in text
+        or "water bill" in text
+    ):
 
-    # ---------------------------------
-    # CELLULAR
-    # ---------------------------------
+        return "water"
 
-    cellular_keywords = [
-        "wireless",
-        "mobile",
-        "phone number",
-        "device payment",
-    ]
+    # -----------------------------------------------------
+    # GAS
+    # -----------------------------------------------------
 
-    # ---------------------------------
-    # DETECTION
-    # ---------------------------------
+    if (
+        "therms" in text
+        or "natural gas" in text
+        or "gas service" in text
+    ):
 
-    for keyword in electric_keywords:
+        return "gas"
 
-        if keyword in text:
-            return "Electric"
+    # -----------------------------------------------------
+    # PHONE
+    # -----------------------------------------------------
 
-    for keyword in water_keywords:
+    if (
+        "wireless" in text
+        or "mobile" in text
+        or "phone number" in text
+    ):
 
-        if keyword in text:
-            return "Water"
+        return "phone"
 
-    for keyword in cellular_keywords:
+    # -----------------------------------------------------
+    # INTERNET
+    # -----------------------------------------------------
 
-        if keyword in text:
-            return "Cellular"
+    if (
+        "internet" in text
+        or "broadband" in text
+        or "wifi" in text
+    ):
 
-    return "Unknown"
+        return "internet"
+
+    # -----------------------------------------------------
+    # SEWER
+    # -----------------------------------------------------
+
+    if "sewer" in text:
+
+        return "sewer"
+
+    # -----------------------------------------------------
+    # TRASH
+    # -----------------------------------------------------
+
+    if (
+        "trash" in text
+        or "solid waste" in text
+        or "recycling" in text
+    ):
+
+        return "trash"
+
+    # -----------------------------------------------------
+    # DEFAULT
+    # -----------------------------------------------------
+
+    return "electric"
