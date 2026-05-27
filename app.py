@@ -19,8 +19,6 @@ from extractors.sewer import extract_sewer_bill
 from extractors.trash import extract_trash_bill
 from extractors.generic import extract_generic_bill
 
-from extractors.detector import detect_bill_type
-
 
 # =========================================================
 # CREATE REQUIRED FOLDERS
@@ -103,49 +101,39 @@ def upload_files():
 
         try:
 
-            # =====================================================
-            # AUTO DETECT BILL TYPE
-            # =====================================================
-
-            bill_type = detect_bill_type(filepath)
-
-            print(f"BILL TYPE DETECTED: {bill_type}")
+            filename = file.filename.lower()
 
             # =====================================================
-            # RUN CORRECT EXTRACTOR
+            # BILL TYPE ROUTING
             # =====================================================
 
-            if bill_type == "electric":
-
-                extracted_rows = extract_electric_bill(filepath)
-
-            elif bill_type == "water":
+            if "water" in filename:
 
                 extracted_rows = extract_water_bill(filepath)
 
-            elif bill_type == "gas":
+            elif "gas" in filename:
 
                 extracted_rows = extract_gas_bill(filepath)
 
-            elif bill_type == "phone":
+            elif "phone" in filename:
 
                 extracted_rows = extract_phone_bill(filepath)
 
-            elif bill_type == "internet":
+            elif "internet" in filename:
 
                 extracted_rows = extract_internet_bill(filepath)
 
-            elif bill_type == "sewer":
+            elif "sewer" in filename:
 
                 extracted_rows = extract_sewer_bill(filepath)
 
-            elif bill_type == "trash":
+            elif "trash" in filename:
 
                 extracted_rows = extract_trash_bill(filepath)
 
             else:
 
-                extracted_rows = extract_generic_bill(filepath)
+                extracted_rows = extract_electric_bill(filepath)
 
             print(f"ROWS EXTRACTED: {len(extracted_rows)}")
 
