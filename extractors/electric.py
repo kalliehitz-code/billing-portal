@@ -13,6 +13,9 @@ from openpyxl.styles import Side
 
 from openpyxl.utils import get_column_letter
 
+from openpyxl.chart import BarChart
+from openpyxl.chart import Reference
+
 
 OUTPUT_FILE = Path("outputs/output.xlsx")
 
@@ -294,6 +297,29 @@ def create_pretty_excel(df: pd.DataFrame):
             index=False
         )
 
+        # =====================================================
+        # TOP SERVICE ADDRESSES
+        # =====================================================
+
+        top_addresses = (
+            clean_df.groupby("service_address")["current_charges"]
+            .sum()
+            .sort_values(ascending=False)
+            .head(10)
+            .reset_index()
+        )
+
+        top_addresses.columns = [
+            "Service Address",
+            "Total Charges"
+        ]
+
+        top_addresses.to_excel(
+            writer,
+            sheet_name="Top Charges",
+            index=False
+        )
+
     wb = load_workbook(OUTPUT_FILE)
 
     # =========================================================
@@ -421,6 +447,10 @@ def create_pretty_excel(df: pd.DataFrame):
 
             title_cell.value = "Billing Extraction Report"
 
+        elif ws.title == "Top Charges":
+
+            title_cell.value = "Top Service Address Charges"
+
         else:
 
             title_cell.value = "Extraction Summary Dashboard"
@@ -542,13 +572,16 @@ def create_pretty_excel(df: pd.DataFrame):
         # CURRENCY FORMAT
         # -----------------------------------------------------
 
-        if ws.title == "Bill Details":
+        if ws.title in ["Bill Details", "Top Charges"]:
 
             charge_column = None
 
             for cell in ws[2]:
 
-                if cell.value == "Current Charges":
+                if (
+                    cell.value == "Current Charges"
+                    or cell.value == "Total Charges"
+                ):
 
                     charge_column = cell.column
 
@@ -564,6 +597,50 @@ def create_pretty_excel(df: pd.DataFrame):
                     )
 
                     amount_cell.number_format = "$#,##0.00"
+
+        # -----------------------------------------------------
+        # TOP CHARGES CHART
+        # -----------------------------------------------------
+
+        if ws.title == "Top Charges":
+
+            chart = BarChart()
+
+            chart.title = "Top Service Addresses"
+
+            chart.y_axis.title = "Charges"
+
+            chart.x_axis.title = "Address"
+
+            data = Reference(
+                ws,
+                min_col=2,
+                min_row=2,
+                max_row=min(ws.max_row, 12)
+            )
+
+            categories = Reference(
+                ws,
+                min_col=1,
+                min_row=3,
+                max_row=min(ws.max_row, 12)
+            )
+
+            chart.add_data(
+                data,
+                titles_from_data=True
+            )
+
+            chart.set_categories(categories)
+
+            chart.height = 12
+
+            chart.width = 20
+
+            ws.add_chart(
+                chart,
+                "D3"
+            )
 
         # -----------------------------------------------------
         # SUMMARY FORMATTING
