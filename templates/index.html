@@ -11,29 +11,31 @@
 
     <style>
 
+        * {
+            box-sizing: border-box;
+        }
+
         body {
 
-            font-family: Arial, sans-serif;
-            background-color: #f4f6f9;
             margin: 0;
-            padding: 0;
+            font-family: Arial, sans-serif;
+            background-color: #eef2f7;
 
         }
 
         .top-bar {
 
-            background-color: #1F4E78;
+            background: #1F4E78;
             color: white;
-            padding: 20px;
             text-align: center;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+            padding: 25px 20px;
 
         }
 
         .logo {
 
             height: 80px;
-            margin-bottom: 15px;
+            margin-bottom: 10px;
 
         }
 
@@ -56,10 +58,16 @@
 
             max-width: 900px;
             margin: 50px auto;
+            padding: 40px;
+
+        }
+
+        .card {
+
             background: white;
-            padding: 50px;
             border-radius: 18px;
-            box-shadow: 0 4px 18px rgba(0,0,0,0.1);
+            padding: 50px;
+            box-shadow: 0 6px 24px rgba(0,0,0,0.08);
 
         }
 
@@ -69,41 +77,48 @@
             border-radius: 16px;
             padding: 70px 30px;
             text-align: center;
-            background-color: #f9fbfd;
-            transition: 0.3s;
+            background: #f9fbfd;
+            transition: 0.25s;
             cursor: pointer;
+
+        }
+
+        .upload-area:hover {
+
+            background: #eef5fb;
 
         }
 
         .upload-area.dragover {
 
-            background-color: #dbeeff;
+            background: #dceeff;
             border-color: #368F1E;
 
         }
 
-        .upload-area h2 {
+        .upload-title {
 
+            font-size: 40px;
             color: #1F4E78;
-            font-size: 42px;
             margin-bottom: 15px;
+            font-weight: bold;
 
         }
 
-        .upload-area p {
+        .upload-subtitle {
 
+            font-size: 20px;
             color: #666;
-            font-size: 22px;
 
         }
 
-        input[type="file"] {
+        #file-input {
 
             display: none;
 
         }
 
-        .button-container {
+        .button-wrap {
 
             text-align: center;
             margin-top: 35px;
@@ -112,7 +127,7 @@
 
         button {
 
-            background-color: #1F4E78;
+            background: #1F4E78;
             color: white;
             border: none;
             padding: 18px 42px;
@@ -125,16 +140,16 @@
 
         button:hover {
 
-            background-color: #163a5a;
+            background: #163a5a;
 
         }
 
         .footer {
 
-            margin-top: 40px;
             text-align: center;
-            color: #888;
-            font-size: 15px;
+            margin-top: 30px;
+            color: #777;
+            font-size: 14px;
 
         }
 
@@ -142,12 +157,10 @@
 
             display: none;
             position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
+            inset: 0;
             background: rgba(255,255,255,0.92);
             z-index: 9999;
+
             justify-content: center;
             align-items: center;
             flex-direction: column;
@@ -162,7 +175,6 @@
             border-top: 10px solid #1F4E78;
             border-radius: 50%;
             animation: spin 1s linear infinite;
-            margin-bottom: 25px;
 
         }
 
@@ -180,9 +192,10 @@
 
         .loading-text {
 
+            margin-top: 20px;
             font-size: 28px;
-            color: #1F4E78;
             font-weight: bold;
+            color: #1F4E78;
 
         }
 
@@ -209,60 +222,69 @@
 
     <div class="container">
 
-        <form
-            id="upload-form"
-            action="/upload"
-            method="POST"
-            enctype="multipart/form-data"
-        >
+        <div class="card">
 
-            <label
-                for="file-input"
-                class="upload-area"
-                id="upload-area"
+            <form
+                id="upload-form"
+                action="/upload"
+                method="POST"
+                enctype="multipart/form-data"
             >
 
-                <h2>Drag & Drop PDF Bills Here</h2>
+                <label
+                    for="file-input"
+                    class="upload-area"
+                    id="upload-area"
+                >
 
-                <p>or click to browse files</p>
+                    <div class="upload-title">
+                        Drag & Drop PDF Bills Here
+                    </div>
 
-            </label>
+                    <div class="upload-subtitle">
+                        or click to browse files
+                    </div>
 
-            <input
-                type="file"
-                id="file-input"
-                name="files"
-                multiple
-                accept=".pdf"
-                required
-            >
+                </label>
 
-            <div class="button-container">
+                <input
+                    type="file"
+                    id="file-input"
+                    name="files"
+                    multiple
+                    accept=".pdf"
+                    required
+                >
 
-                <button type="submit">
-                    Process Bills
-                </button>
+                <div class="button-wrap">
+
+                    <button type="submit">
+                        Process Bills
+                    </button>
+
+                </div>
+
+            </form>
+
+            <div class="footer">
+
+                City Utility Billing Automation System
 
             </div>
-
-        </form>
-
-        <div class="footer">
-
-            City Utility Billing Automation System
 
         </div>
 
     </div>
 
-    <div class="loading-overlay" id="loading-overlay">
+    <div
+        class="loading-overlay"
+        id="loading-overlay"
+    >
 
         <div class="spinner"></div>
 
         <div class="loading-text">
-
             Processing Bills...
-
         </div>
 
     </div>
