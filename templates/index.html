@@ -55,7 +55,7 @@
 
         .main {
 
-            max-width: 950px;
+            max-width: 1000px;
             margin: 50px auto;
             padding: 0 20px;
 
@@ -198,6 +198,73 @@
 
         }
 
+        .progress-container {
+
+            display: none;
+            margin-top: 30px;
+
+        }
+
+        .progress-text {
+
+            font-size: 22px;
+            font-weight: bold;
+            color: #1F4E78;
+            margin-bottom: 12px;
+            text-align: center;
+
+        }
+
+        .progress-bar-bg {
+
+            width: 100%;
+            height: 28px;
+            background: #d9e1f2;
+            border-radius: 20px;
+            overflow: hidden;
+
+        }
+
+        .progress-bar {
+
+            width: 0%;
+            height: 100%;
+            background: #368F1E;
+            transition: 0.4s;
+
+        }
+
+        .file-list {
+
+            margin-top: 35px;
+
+        }
+
+        .file-card {
+
+            background: #f4f6f9;
+            border: 1px solid #d9e1f2;
+            border-radius: 12px;
+            padding: 15px;
+            margin-bottom: 12px;
+
+        }
+
+        .file-name {
+
+            font-size: 18px;
+            font-weight: bold;
+            color: #1F4E78;
+
+        }
+
+        .file-size {
+
+            color: #666;
+            margin-top: 5px;
+
+        }
+
     </style>
 
 </head>
@@ -249,6 +316,31 @@
                     required
                 >
 
+                <div class="file-list" id="file-list"></div>
+
+                <div
+                    class="progress-container"
+                    id="progress-container"
+                >
+
+                    <div
+                        class="progress-text"
+                        id="progress-text"
+                    >
+                        Preparing Upload...
+                    </div>
+
+                    <div class="progress-bar-bg">
+
+                        <div
+                            class="progress-bar"
+                            id="progress-bar"
+                        ></div>
+
+                    </div>
+
+                </div>
+
                 <div class="button-row">
 
                     <button type="submit">
@@ -292,6 +384,14 @@
 
         const loading = document.getElementById("loading");
 
+        const fileList = document.getElementById("file-list");
+
+        const progressContainer = document.getElementById("progress-container");
+
+        const progressBar = document.getElementById("progress-bar");
+
+        const progressText = document.getElementById("progress-text");
+
 
         uploadBox.addEventListener("click", () => {
 
@@ -324,12 +424,71 @@
 
             fileInput.files = e.dataTransfer.files;
 
+            displayFiles(fileInput.files);
+
         });
+
+
+        fileInput.addEventListener("change", () => {
+
+            displayFiles(fileInput.files);
+
+        });
+
+
+        function displayFiles(files) {
+
+            fileList.innerHTML = "";
+
+            Array.from(files).forEach(file => {
+
+                const fileCard = document.createElement("div");
+
+                fileCard.className = "file-card";
+
+                fileCard.innerHTML = `
+
+                    <div class="file-name">
+                        ${file.name}
+                    </div>
+
+                    <div class="file-size">
+                        ${(file.size / 1024).toFixed(1)} KB
+                    </div>
+
+                `;
+
+                fileList.appendChild(fileCard);
+
+            });
+
+        }
 
 
         form.addEventListener("submit", () => {
 
             loading.style.display = "flex";
+
+            progressContainer.style.display = "block";
+
+            let progress = 0;
+
+            const interval = setInterval(() => {
+
+                progress += 10;
+
+                progressBar.style.width = progress + "%";
+
+                progressText.innerText =
+                    "Processing Bills... " + progress + "%";
+
+                if (progress >= 90) {
+
+                    clearInterval(interval);
+
+                }
+
+            }, 400);
 
         });
 
