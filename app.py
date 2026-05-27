@@ -11,6 +11,14 @@ from extractors.electric import extract_electric_bill
 from extractors.electric import create_pretty_excel
 from extractors.electric import OUTPUT_FILE
 
+from extractors.water import extract_water_bill
+from extractors.gas import extract_gas_bill
+from extractors.phone import extract_phone_bill
+from extractors.internet import extract_internet_bill
+from extractors.sewer import extract_sewer_bill
+from extractors.trash import extract_trash_bill
+from extractors.generic import extract_generic_bill
+
 
 # =========================================================
 # CREATE REQUIRED FOLDERS
@@ -87,10 +95,49 @@ def upload_files():
 
         print(f"FILE SAVED: {filepath}")
 
+        # -------------------------------------------------
         # EXTRACT DATA
+        # -------------------------------------------------
+
         try:
 
-            extracted_rows = extract_electric_bill(filepath)
+            filename = file.filename.lower()
+
+            # =====================================================
+            # DETECT BILL TYPE
+            # =====================================================
+
+            if "electric" in filename:
+
+                extracted_rows = extract_electric_bill(filepath)
+
+            elif "water" in filename:
+
+                extracted_rows = extract_water_bill(filepath)
+
+            elif "gas" in filename:
+
+                extracted_rows = extract_gas_bill(filepath)
+
+            elif "phone" in filename:
+
+                extracted_rows = extract_phone_bill(filepath)
+
+            elif "internet" in filename:
+
+                extracted_rows = extract_internet_bill(filepath)
+
+            elif "sewer" in filename:
+
+                extracted_rows = extract_sewer_bill(filepath)
+
+            elif "trash" in filename:
+
+                extracted_rows = extract_trash_bill(filepath)
+
+            else:
+
+                extracted_rows = extract_generic_bill(filepath)
 
             print(f"ROWS EXTRACTED: {len(extracted_rows)}")
 
@@ -186,8 +233,4 @@ def download_file():
 
 if __name__ == "__main__":
 
-    app.run(
-        host="0.0.0.0",
-        port=5000,
-        debug=True
-    )
+    app.run(debug=True)
