@@ -30,16 +30,24 @@
 
         }
 
+        .logo {
+
+            height: 80px;
+            margin-bottom: 15px;
+
+        }
+
         .top-bar h1 {
 
             margin: 0;
-            font-size: 34px;
+            font-size: 42px;
 
         }
 
         .top-bar p {
 
-            margin-top: 8px;
+            margin-top: 10px;
+            font-size: 20px;
             opacity: 0.9;
 
         }
@@ -47,10 +55,10 @@
         .container {
 
             max-width: 900px;
-            margin: 40px auto;
+            margin: 50px auto;
             background: white;
-            padding: 40px;
-            border-radius: 16px;
+            padding: 50px;
+            border-radius: 18px;
             box-shadow: 0 4px 18px rgba(0,0,0,0.1);
 
         }
@@ -58,18 +66,12 @@
         .upload-area {
 
             border: 3px dashed #1F4E78;
-            border-radius: 14px;
-            padding: 60px 30px;
+            border-radius: 16px;
+            padding: 70px 30px;
             text-align: center;
             background-color: #f9fbfd;
             transition: 0.3s;
             cursor: pointer;
-
-        }
-
-        .upload-area:hover {
-
-            background-color: #eef5fb;
 
         }
 
@@ -83,13 +85,15 @@
         .upload-area h2 {
 
             color: #1F4E78;
-            margin-bottom: 10px;
+            font-size: 42px;
+            margin-bottom: 15px;
 
         }
 
         .upload-area p {
 
             color: #666;
+            font-size: 22px;
 
         }
 
@@ -99,16 +103,22 @@
 
         }
 
+        .button-container {
+
+            text-align: center;
+            margin-top: 35px;
+
+        }
+
         button {
 
             background-color: #1F4E78;
             color: white;
             border: none;
-            padding: 16px 36px;
-            border-radius: 10px;
-            font-size: 17px;
+            padding: 18px 42px;
+            border-radius: 12px;
+            font-size: 20px;
             cursor: pointer;
-            margin-top: 25px;
             transition: 0.2s;
 
         }
@@ -116,6 +126,15 @@
         button:hover {
 
             background-color: #163a5a;
+
+        }
+
+        .footer {
+
+            margin-top: 40px;
+            text-align: center;
+            color: #888;
+            font-size: 15px;
 
         }
 
@@ -137,13 +156,13 @@
 
         .spinner {
 
-            width: 80px;
-            height: 80px;
+            width: 90px;
+            height: 90px;
             border: 10px solid #d9e1f2;
             border-top: 10px solid #1F4E78;
             border-radius: 50%;
             animation: spin 1s linear infinite;
-            margin-bottom: 20px;
+            margin-bottom: 25px;
 
         }
 
@@ -161,25 +180,9 @@
 
         .loading-text {
 
-            font-size: 24px;
+            font-size: 28px;
             color: #1F4E78;
             font-weight: bold;
-
-        }
-
-        .footer {
-
-            margin-top: 35px;
-            text-align: center;
-            color: #888;
-            font-size: 14px;
-
-        }
-
-        .logo {
-
-            height: 80px;
-            margin-bottom: 15px;
 
         }
 
@@ -213,28 +216,34 @@
             enctype="multipart/form-data"
         >
 
-            <label class="upload-area" id="upload-area">
-
-                <input
-                    type="file"
-                    id="file-input"
-                    name="files"
-                    multiple
-                    accept=".pdf"
-                    required
-                >
+            <label
+                for="file-input"
+                class="upload-area"
+                id="upload-area"
+            >
 
                 <h2>Drag & Drop PDF Bills Here</h2>
 
-                <p>
-                    or click to browse files
-                </p>
+                <p>or click to browse files</p>
+
+            </label>
+
+            <input
+                type="file"
+                id="file-input"
+                name="files"
+                multiple
+                accept=".pdf"
+                required
+            >
+
+            <div class="button-container">
 
                 <button type="submit">
                     Process Bills
                 </button>
 
-            </label>
+            </div>
 
         </form>
 
@@ -251,7 +260,9 @@
         <div class="spinner"></div>
 
         <div class="loading-text">
+
             Processing Bills...
+
         </div>
 
     </div>
