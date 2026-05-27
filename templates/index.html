@@ -1,4 +1,249 @@
 <!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Utility Billing Portal</title>
+
+    <style>
+
+        body {
+
+            font-family: Arial, sans-serif;
+            background-color: #f4f6f9;
+            margin: 0;
+            padding: 0;
+
+        }
+
+        .top-bar {
+
+            background-color: #1F4E78;
+            color: white;
+            padding: 20px;
+            text-align: center;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+
+        }
+
+        .top-bar h1 {
+
+            margin: 0;
+            font-size: 34px;
+
+        }
+
+        .top-bar p {
+
+            margin-top: 8px;
+            opacity: 0.9;
+
+        }
+
+        .container {
+
+            max-width: 900px;
+            margin: 40px auto;
+            background: white;
+            padding: 40px;
+            border-radius: 16px;
+            box-shadow: 0 4px 18px rgba(0,0,0,0.1);
+
+        }
+
+        .upload-area {
+
+            border: 3px dashed #1F4E78;
+            border-radius: 14px;
+            padding: 60px 30px;
+            text-align: center;
+            background-color: #f9fbfd;
+            transition: 0.3s;
+            cursor: pointer;
+
+        }
+
+        .upload-area:hover {
+
+            background-color: #eef5fb;
+
+        }
+
+        .upload-area.dragover {
+
+            background-color: #dbeeff;
+            border-color: #368F1E;
+
+        }
+
+        .upload-area h2 {
+
+            color: #1F4E78;
+            margin-bottom: 10px;
+
+        }
+
+        .upload-area p {
+
+            color: #666;
+
+        }
+
+        input[type="file"] {
+
+            display: none;
+
+        }
+
+        button {
+
+            background-color: #1F4E78;
+            color: white;
+            border: none;
+            padding: 16px 36px;
+            border-radius: 10px;
+            font-size: 17px;
+            cursor: pointer;
+            margin-top: 25px;
+            transition: 0.2s;
+
+        }
+
+        button:hover {
+
+            background-color: #163a5a;
+
+        }
+
+        .loading-overlay {
+
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(255,255,255,0.92);
+            z-index: 9999;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+
+        }
+
+        .spinner {
+
+            width: 80px;
+            height: 80px;
+            border: 10px solid #d9e1f2;
+            border-top: 10px solid #1F4E78;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin-bottom: 20px;
+
+        }
+
+        @keyframes spin {
+
+            0% {
+                transform: rotate(0deg);
+            }
+
+            100% {
+                transform: rotate(360deg);
+            }
+
+        }
+
+        .loading-text {
+
+            font-size: 24px;
+            color: #1F4E78;
+            font-weight: bold;
+
+        }
+
+        .footer {
+
+            margin-top: 35px;
+            text-align: center;
+            color: #888;
+            font-size: 14px;
+
+        }
+
+        .logo {
+
+            height: 80px;
+            margin-bottom: 15px;
+
+        }
+
+    </style>
+
+</head>
+
+<body>
+
+    <div class="top-bar">
+
+        <img
+            src="{{ url_for('static', filename='logo.jpg') }}"
+            class="logo"
+        >
+
+        <h1>Utility Billing Portal</h1>
+
+        <p>
+            Automated PDF Extraction & Excel Reporting
+        </p>
+
+    </div>
+
+    <div class="container">
+
+        <form
+            id="upload-form"
+            action="/upload"
+            method="POST"
+            enctype="multipart/form-data"
+        >
+
+            <label class="upload-area" id="upload-area">
+
+                <input
+                    type="file"
+                    id="file-input"
+                    name="files"
+                    multiple
+                    accept=".pdf"
+                    required
+                >
+
+                <h2>Drag & Drop PDF Bills Here</h2>
+
+                <p>
+                    or click to browse files
+                </p>
+
+                <button type="submit">
+                    Process Bills
+                </button>
+
+            </label>
+
+        </form>
+
+        <div class="footer">
+
+            City Utility Billing Automation System
+
+        </div>
+
     </div>
 
     <div class="loading-overlay" id="loading-overlay">
