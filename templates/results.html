@@ -13,115 +13,119 @@
 
         body {
 
+            margin: 0;
             font-family: Arial, sans-serif;
+            background: #eef2f7;
 
-            background-color: #f4f6f9;
+        }
+
+        .header {
+
+            background: #1F4E78;
+            color: white;
+            text-align: center;
+            padding: 25px;
+
+        }
+
+        .header h1 {
 
             margin: 0;
-
-            padding: 0;
+            font-size: 42px;
 
         }
 
         .container {
 
-            max-width: 900px;
-
+            max-width: 1100px;
             margin: 50px auto;
-
-            background: white;
-
-            padding: 40px;
-
-            border-radius: 12px;
-
-            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            padding: 20px;
 
         }
 
-        h1 {
+        .summary-card {
 
-            text-align: center;
+            background: white;
+            border-radius: 18px;
+            padding: 40px;
+            box-shadow: 0 8px 24px rgba(0,0,0,0.08);
 
-            color: #1F4E78;
+        }
 
+        .success {
+
+            color: #368F1E;
+            font-size: 34px;
+            font-weight: bold;
             margin-bottom: 30px;
 
         }
 
-        .summary-grid {
+        .grid {
 
             display: grid;
-
-            grid-template-columns: repeat(2, 1fr);
-
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
             gap: 20px;
 
-            margin-bottom: 40px;
+        }
+
+        .stat-box {
+
+            background: #f4f6f9;
+            border-radius: 14px;
+            padding: 25px;
+            text-align: center;
 
         }
 
-        .card {
-
-            background-color: #f9fbfd;
-
-            border-left: 6px solid #1F4E78;
-
-            padding: 20px;
-
-            border-radius: 8px;
-
-        }
-
-        .card h2 {
-
-            margin: 0;
-
-            color: #1F4E78;
+        .stat-label {
 
             font-size: 18px;
+            color: #666;
+            margin-bottom: 10px;
 
         }
 
-        .card p {
+        .stat-value {
 
-            margin-top: 10px;
-
-            font-size: 28px;
-
+            font-size: 34px;
             font-weight: bold;
-
-            color: #333;
+            color: #1F4E78;
 
         }
 
         .download-section {
 
             text-align: center;
+            margin-top: 45px;
 
         }
 
-        .download-button {
+        .download-btn {
 
+            background: #1F4E78;
+            color: white;
+            border: none;
+            padding: 18px 42px;
+            border-radius: 12px;
+            font-size: 22px;
+            cursor: pointer;
+            text-decoration: none;
             display: inline-block;
 
-            background-color: #1F4E78;
+        }
 
-            color: white;
+        .download-btn:hover {
 
-            padding: 16px 32px;
-
-            text-decoration: none;
-
-            border-radius: 8px;
-
-            font-size: 18px;
+            background: #163a5a;
 
         }
 
-        .download-button:hover {
+        .footer {
 
-            background-color: #163a5a;
+            text-align: center;
+            margin-top: 30px;
+            color: #777;
 
         }
 
@@ -131,54 +135,90 @@
 
 <body>
 
+    <div class="header">
+
+        <h1>Billing Extraction Complete</h1>
+
+    </div>
+
     <div class="container">
 
-        <h1>Extraction Complete</h1>
+        <div class="summary-card">
 
-        <div class="summary-grid">
+            <div class="success">
 
-            <div class="card">
-
-                <h2>PDF Files Processed</h2>
-
-                <p>{{ pdf_count }}</p>
+                ✓ Processing Successful
 
             </div>
 
-            <div class="card">
+            <div class="grid">
 
-                <h2>Rows Extracted</h2>
+                <div class="stat-box">
 
-                <p>{{ row_count }}</p>
+                    <div class="stat-label">
+                        PDFs Processed
+                    </div>
+
+                    <div class="stat-value">
+                        {{ total_files }}
+                    </div>
+
+                </div>
+
+                <div class="stat-box">
+
+                    <div class="stat-label">
+                        Rows Extracted
+                    </div>
+
+                    <div class="stat-value">
+                        {{ total_rows }}
+                    </div>
+
+                </div>
+
+                <div class="stat-box">
+
+                    <div class="stat-label">
+                        Total Charges
+                    </div>
+
+                    <div class="stat-value">
+                        ${{ total_charges }}
+                    </div>
+
+                </div>
+
+                <div class="stat-box">
+
+                    <div class="stat-label">
+                        Confidence
+                    </div>
+
+                    <div class="stat-value">
+                        HIGH
+                    </div>
+
+                </div>
 
             </div>
 
-            <div class="card">
+            <div class="download-section">
 
-                <h2>Total Charges</h2>
-
-                <p>${{ total_charges }}</p>
-
-            </div>
-
-            <div class="card">
-
-                <h2>Confidence Score</h2>
-
-                <p>{{ confidence }}%</p>
+                <a
+                    href="/download"
+                    class="download-btn"
+                >
+                    Download Excel Report
+                </a>
 
             </div>
 
         </div>
 
-        <div class="download-section">
+        <div class="footer">
 
-            <a
-                class="download-button"
-                href="/download"
-            >
-                Download Excel Report
-            </a>
+            City Utility Billing Automation System
 
         </div>
 
