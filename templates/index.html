@@ -7,262 +7,237 @@
 
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <title>Utility Billing Portal</title>
+    <title>Billing Portal</title>
 
     <style>
 
         * {
+            margin: 0;
+            padding: 0;
             box-sizing: border-box;
         }
 
         body {
 
-            margin: 0;
             font-family: Arial, sans-serif;
-            background-color: #eef2f7;
-
+            background: #f4f7fb;
+            color: #1f2937;
+            display: flex;
+            min-height: 100vh;
         }
 
-        .header {
+        /* =====================================================
+           SIDEBAR
+        ===================================================== */
 
-            background-color: #1F4E78;
+        .sidebar {
+
+            width: 250px;
+            background: #0f172a;
             color: white;
-            text-align: center;
-            padding: 25px;
-
+            padding: 30px 20px;
         }
 
-        .header img {
+        .sidebar h2 {
 
-            height: 80px;
+            margin-bottom: 30px;
+            font-size: 24px;
+        }
+
+        .sidebar ul {
+
+            list-style: none;
+        }
+
+        .sidebar li {
+
+            padding: 14px 12px;
+            border-radius: 10px;
             margin-bottom: 10px;
-
+            cursor: pointer;
+            transition: 0.2s;
         }
 
-        .header h1 {
+        .sidebar li:hover {
 
-            margin: 0;
-            font-size: 48px;
-
+            background: #1e293b;
         }
 
-        .header p {
+        .sidebar .active {
 
-            margin-top: 10px;
-            font-size: 22px;
-
+            background: #2563eb;
         }
+
+        /* =====================================================
+           MAIN CONTENT
+        ===================================================== */
 
         .main {
 
-            max-width: 1000px;
-            margin: 50px auto;
-            padding: 0 20px;
-
+            flex: 1;
+            padding: 30px;
         }
+
+        /* =====================================================
+           TOP HEADER
+        ===================================================== */
+
+        .topbar {
+
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+        }
+
+        .topbar h1 {
+
+            font-size: 32px;
+        }
+
+        .logo {
+
+            height: 60px;
+        }
+
+        /* =====================================================
+           STATS
+        ===================================================== */
+
+        .stats-grid {
+
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .stat-card {
+
+            background: white;
+            padding: 25px;
+            border-radius: 16px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.06);
+        }
+
+        .stat-card h3 {
+
+            color: #6b7280;
+            font-size: 15px;
+            margin-bottom: 10px;
+        }
+
+        .stat-card p {
+
+            font-size: 32px;
+            font-weight: bold;
+            color: #2563eb;
+        }
+
+        /* =====================================================
+           CONTENT GRID
+        ===================================================== */
+
+        .content-grid {
+
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 25px;
+        }
+
+        /* =====================================================
+           UPLOAD CARD
+        ===================================================== */
 
         .card {
 
             background: white;
-            border-radius: 18px;
-            padding: 50px;
-            box-shadow: 0 8px 24px rgba(0,0,0,0.08);
+            padding: 30px;
+            border-radius: 16px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.06);
+        }
 
+        .card h2 {
+
+            margin-bottom: 20px;
         }
 
         .upload-box {
 
-            border: 3px dashed #1F4E78;
-            border-radius: 18px;
-            padding: 80px 30px;
+            border: 2px dashed #94a3b8;
+            border-radius: 14px;
+            padding: 40px;
             text-align: center;
-            cursor: pointer;
-            transition: 0.2s;
-            background: #f8fbff;
-
+            background: #f8fafc;
         }
 
-        .upload-box:hover {
+        .upload-box input {
 
-            background: #edf5fc;
-
-        }
-
-        .upload-box.dragover {
-
-            background: #dceeff;
-            border-color: #368F1E;
-
-        }
-
-        .upload-title {
-
-            font-size: 44px;
-            font-weight: bold;
-            color: #1F4E78;
-            margin-bottom: 20px;
-
-        }
-
-        .upload-subtitle {
-
-            font-size: 22px;
-            color: #666;
-
-        }
-
-        #file-input {
-
-            display: none;
-
-        }
-
-        .button-row {
-
-            text-align: center;
-            margin-top: 35px;
-
+            margin-top: 20px;
         }
 
         button {
 
-            background-color: #1F4E78;
+            margin-top: 20px;
+            background: #2563eb;
             color: white;
             border: none;
-            padding: 18px 42px;
-            font-size: 20px;
-            border-radius: 12px;
+            padding: 14px 22px;
+            border-radius: 10px;
             cursor: pointer;
+            font-size: 16px;
             transition: 0.2s;
-
         }
 
         button:hover {
 
-            background-color: #163a5a;
-
+            background: #1d4ed8;
         }
 
-        .footer {
+        /* =====================================================
+           TASKS
+        ===================================================== */
 
-            text-align: center;
-            margin-top: 30px;
-            color: #777;
-            font-size: 14px;
+        .task {
 
-        }
-
-        .loading {
-
-            display: none;
-            position: fixed;
-            inset: 0;
-            background: rgba(255,255,255,0.92);
-            z-index: 9999;
-
-            justify-content: center;
-            align-items: center;
-            flex-direction: column;
-
-        }
-
-        .spinner {
-
-            width: 90px;
-            height: 90px;
-            border: 10px solid #d9e1f2;
-            border-top: 10px solid #1F4E78;
-            border-radius: 50%;
-            animation: spin 1s linear infinite;
-
-        }
-
-        .loading-text {
-
-            margin-top: 20px;
-            font-size: 28px;
-            color: #1F4E78;
-            font-weight: bold;
-
-        }
-
-        @keyframes spin {
-
-            0% {
-                transform: rotate(0deg);
-            }
-
-            100% {
-                transform: rotate(360deg);
-            }
-
-        }
-
-        .progress-container {
-
-            display: none;
-            margin-top: 30px;
-
-        }
-
-        .progress-text {
-
-            font-size: 22px;
-            font-weight: bold;
-            color: #1F4E78;
-            margin-bottom: 12px;
-            text-align: center;
-
-        }
-
-        .progress-bar-bg {
-
-            width: 100%;
-            height: 28px;
-            background: #d9e1f2;
-            border-radius: 20px;
-            overflow: hidden;
-
-        }
-
-        .progress-bar {
-
-            width: 0%;
-            height: 100%;
-            background: #368F1E;
-            transition: 0.4s;
-
-        }
-
-        .file-list {
-
-            margin-top: 35px;
-
-        }
-
-        .file-card {
-
-            background: #f4f6f9;
-            border: 1px solid #d9e1f2;
-            border-radius: 12px;
             padding: 15px;
-            margin-bottom: 12px;
-
+            border-radius: 12px;
+            margin-bottom: 15px;
+            background: #f8fafc;
+            border-left: 6px solid #2563eb;
         }
 
-        .file-name {
+        .task h4 {
 
-            font-size: 18px;
-            font-weight: bold;
-            color: #1F4E78;
-
+            margin-bottom: 5px;
         }
 
-        .file-size {
+        .task p {
 
-            color: #666;
-            margin-top: 5px;
+            color: #6b7280;
+            font-size: 14px;
+        }
 
+        /* =====================================================
+           RESPONSIVE
+        ===================================================== */
+
+        @media (max-width: 900px) {
+
+            body {
+
+                flex-direction: column;
+            }
+
+            .sidebar {
+
+                width: 100%;
+            }
+
+            .content-grid {
+
+                grid-template-columns: 1fr;
+            }
         }
 
     </style>
@@ -271,228 +246,198 @@
 
 <body>
 
-    <div class="header">
+    <!-- =====================================================
+         SIDEBAR
+    ====================================================== -->
 
-        <img src="{{ url_for('static', filename='logo.jpg') }}">
+    <div class="sidebar">
 
-        <h1>Utility Billing Portal</h1>
+        <h2>Billing Portal</h2>
 
-        <p>Automated PDF Extraction & Excel Reporting</p>
+        <ul>
+
+            <li class="active">Dashboard</li>
+
+            <li>Upload Bills</li>
+
+            <li>Electric Bills</li>
+
+            <li>Water Bills</li>
+
+            <li>Gas Bills</li>
+
+            <li>Phone Bills</li>
+
+            <li>Reports</li>
+
+            <li>Tasks</li>
+
+            <li>Settings</li>
+
+        </ul>
 
     </div>
 
+    <!-- =====================================================
+         MAIN CONTENT
+    ====================================================== -->
+
     <div class="main">
 
-        <div class="card">
+        <!-- TOPBAR -->
 
-            <form
-                id="upload-form"
-                action="/upload"
-                method="POST"
-                enctype="multipart/form-data"
+        <div class="topbar">
+
+            <div>
+
+                <h1>Utility Billing Dashboard</h1>
+
+                <p>City Utility Processing System</p>
+
+            </div>
+
+            <img
+                src="{{ url_for('static', filename='logo.jpg') }}"
+                class="logo"
             >
 
-                <div
-                    class="upload-box"
-                    id="upload-box"
+        </div>
+
+        <!-- STATS -->
+
+        <div class="stats-grid">
+
+            <div class="stat-card">
+
+                <h3>Total Bills Processed</h3>
+
+                <p>1,248</p>
+
+            </div>
+
+            <div class="stat-card">
+
+                <h3>Total Charges</h3>
+
+                <p>$84K</p>
+
+            </div>
+
+            <div class="stat-card">
+
+                <h3>Pending Reviews</h3>
+
+                <p>12</p>
+
+            </div>
+
+            <div class="stat-card">
+
+                <h3>High Confidence</h3>
+
+                <p>98%</p>
+
+            </div>
+
+        </div>
+
+        <!-- MAIN GRID -->
+
+        <div class="content-grid">
+
+            <!-- LEFT SIDE -->
+
+            <div class="card">
+
+                <h2>Upload Utility Bills</h2>
+
+                <form
+                    action="/upload"
+                    method="POST"
+                    enctype="multipart/form-data"
                 >
 
-                    <div class="upload-title">
-                        Drag & Drop PDF Bills Here
+                    <div class="upload-box">
+
+                        <h3>Drag & Drop PDF Bills</h3>
+
+                        <p>
+                            Upload electric, water, gas,
+                            and other utility bills
+                        </p>
+
+                        <input
+                            type="file"
+                            name="files"
+                            multiple
+                            accept=".pdf"
+                        >
+
+                        <br>
+
+                        <button type="submit">
+
+                            Process Bills
+
+                        </button>
+
                     </div>
 
-                    <div class="upload-subtitle">
-                        or click to browse files
-                    </div>
+                </form>
+
+            </div>
+
+            <!-- RIGHT SIDE -->
+
+            <div class="card">
+
+                <h2>Tasks & Alerts</h2>
+
+                <div class="task">
+
+                    <h4>Review High Charges</h4>
+
+                    <p>
+                        3 bills exceeded monthly average
+                    </p>
 
                 </div>
 
-                <input
-                    type="file"
-                    id="file-input"
-                    name="files"
-                    multiple
-                    accept=".pdf"
-                    required
-                >
+                <div class="task">
 
-                <div class="file-list" id="file-list"></div>
+                    <h4>Missing Billing Dates</h4>
 
-                <div
-                    class="progress-container"
-                    id="progress-container"
-                >
-
-                    <div
-                        class="progress-text"
-                        id="progress-text"
-                    >
-                        Preparing Upload...
-                    </div>
-
-                    <div class="progress-bar-bg">
-
-                        <div
-                            class="progress-bar"
-                            id="progress-bar"
-                        ></div>
-
-                    </div>
+                    <p>
+                        2 bills require manual review
+                    </p>
 
                 </div>
 
-                <div class="button-row">
+                <div class="task">
 
-                    <button type="submit">
-                        Process Bills
-                    </button>
+                    <h4>Duplicate Account Warning</h4>
+
+                    <p>
+                        Possible duplicate upload detected
+                    </p>
 
                 </div>
 
-            </form>
+                <div class="task">
 
-            <div class="footer">
+                    <h4>Monthly Report Ready</h4>
 
-                City Utility Billing Automation System
+                    <p>
+                        Export available for Finance
+                    </p>
+
+                </div>
 
             </div>
 
         </div>
 
     </div>
-
-    <div
-        class="loading"
-        id="loading"
-    >
-
-        <div class="spinner"></div>
-
-        <div class="loading-text">
-            Processing Bills...
-        </div>
-
-    </div>
-
-    <script>
-
-        const uploadBox = document.getElementById("upload-box");
-
-        const fileInput = document.getElementById("file-input");
-
-        const form = document.getElementById("upload-form");
-
-        const loading = document.getElementById("loading");
-
-        const fileList = document.getElementById("file-list");
-
-        const progressContainer = document.getElementById("progress-container");
-
-        const progressBar = document.getElementById("progress-bar");
-
-        const progressText = document.getElementById("progress-text");
-
-
-        uploadBox.addEventListener("click", () => {
-
-            fileInput.click();
-
-        });
-
-
-        uploadBox.addEventListener("dragover", (e) => {
-
-            e.preventDefault();
-
-            uploadBox.classList.add("dragover");
-
-        });
-
-
-        uploadBox.addEventListener("dragleave", () => {
-
-            uploadBox.classList.remove("dragover");
-
-        });
-
-
-        uploadBox.addEventListener("drop", (e) => {
-
-            e.preventDefault();
-
-            uploadBox.classList.remove("dragover");
-
-            fileInput.files = e.dataTransfer.files;
-
-            displayFiles(fileInput.files);
-
-        });
-
-
-        fileInput.addEventListener("change", () => {
-
-            displayFiles(fileInput.files);
-
-        });
-
-
-        function displayFiles(files) {
-
-            fileList.innerHTML = "";
-
-            Array.from(files).forEach(file => {
-
-                const fileCard = document.createElement("div");
-
-                fileCard.className = "file-card";
-
-                fileCard.innerHTML = `
-
-                    <div class="file-name">
-                        ${file.name}
-                    </div>
-
-                    <div class="file-size">
-                        ${(file.size / 1024).toFixed(1)} KB
-                    </div>
-
-                `;
-
-                fileList.appendChild(fileCard);
-
-            });
-
-        }
-
-
-        form.addEventListener("submit", () => {
-
-            loading.style.display = "flex";
-
-            progressContainer.style.display = "block";
-
-            let progress = 0;
-
-            const interval = setInterval(() => {
-
-                progress += 10;
-
-                progressBar.style.width = progress + "%";
-
-                progressText.innerText =
-                    "Processing Bills... " + progress + "%";
-
-                if (progress >= 90) {
-
-                    clearInterval(interval);
-
-                }
-
-            }, 400);
-
-        });
-
-    </script>
 
 </body>
 

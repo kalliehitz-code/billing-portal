@@ -17,7 +17,6 @@ from extractors.phone import extract_phone_bill
 from extractors.internet import extract_internet_bill
 from extractors.sewer import extract_sewer_bill
 from extractors.trash import extract_trash_bill
-from extractors.generic import extract_generic_bill
 
 
 # =========================================================
@@ -44,6 +43,72 @@ app = Flask(__name__)
 def home():
 
     return render_template("index.html")
+
+
+# =========================================================
+# ELECTRIC PAGE
+# =========================================================
+
+@app.route("/electric")
+
+def electric_page():
+
+    return render_template("electric.html")
+
+
+# =========================================================
+# WATER PAGE
+# =========================================================
+
+@app.route("/water")
+
+def water_page():
+
+    return render_template("water.html")
+
+
+# =========================================================
+# GAS PAGE
+# =========================================================
+
+@app.route("/gas")
+
+def gas_page():
+
+    return render_template("gas.html")
+
+
+# =========================================================
+# PHONE PAGE
+# =========================================================
+
+@app.route("/phone")
+
+def phone_page():
+
+    return render_template("phone.html")
+
+
+# =========================================================
+# REPORTS PAGE
+# =========================================================
+
+@app.route("/reports")
+
+def reports_page():
+
+    return render_template("reports.html")
+
+
+# =========================================================
+# TASKS PAGE
+# =========================================================
+
+@app.route("/tasks")
+
+def tasks_page():
+
+    return render_template("tasks.html")
 
 
 # =========================================================
