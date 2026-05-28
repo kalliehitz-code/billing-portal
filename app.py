@@ -1,6 +1,19 @@
 from flask import Flask
+from flask import request
+from flask import send_file
+from pathlib import Path
+import pandas as pd
+import os
+
+from extractors.electric import extract_electric_bill
+from extractors.electric import create_pretty_excel
+from extractors.electric import OUTPUT_FILE
 
 app = Flask(__name__)
+
+UPLOAD_FOLDER = "uploads"
+
+os.makedirs(UPLOAD_FOLDER, exist_ok=True)
 
 # =========================================================
 # HOME PAGE
@@ -103,30 +116,6 @@ def home():
 
             </button>
 
-            <button onclick="window.location.href='/water'">
-
-                Water Bills
-
-            </button>
-
-            <button onclick="window.location.href='/gas'">
-
-                Gas Bills
-
-            </button>
-
-            <button onclick="window.location.href='/phone'">
-
-                Phone Bills
-
-            </button>
-
-            <button onclick="window.location.href='/reports'">
-
-                Reports
-
-            </button>
-
         </div>
 
         <div class="main">
@@ -135,21 +124,11 @@ def home():
 
                 <h1>Billing Dashboard</h1>
 
-                <br>
-
                 <p>
 
-                    Welcome to the utility billing management portal.
+                    Utility billing management system.
 
                 </p>
-
-                <br>
-
-                <button onclick="alert('Dashboard Works')">
-
-                    TEST BUTTON
-
-                </button>
 
             </div>
 
@@ -175,7 +154,7 @@ def tasks():
 
     <head>
 
-        <title>Tasks Dashboard</title>
+        <title>Tasks</title>
 
         <style>
 
@@ -225,31 +204,139 @@ def tasks():
                 padding: 40px;
             }
 
-            .task-card {
+        </style>
 
-                background: white;
-                padding: 25px;
-                border-radius: 16px;
-                box-shadow: 0 4px 10px rgba(0,0,0,0.08);
-                margin-bottom: 20px;
+    </head>
+
+    <body>
+
+        <div class="sidebar">
+
+            <h2>Billing Portal</h2>
+
+            <button onclick="window.location.href='/'">
+
+                Dashboard
+
+            </button>
+
+            <button onclick="window.location.href='/tasks'">
+
+                Tasks
+
+            </button>
+
+            <button onclick="window.location.href='/electric'">
+
+                Electric Bills
+
+            </button>
+
+        </div>
+
+        <div class="main">
+
+            <h1>Tasks Dashboard</h1>
+
+            <p>
+
+                Future tasks and approvals will appear here.
+
+            </p>
+
+        </div>
+
+    </body>
+
+    </html>
+    """
+
+
+# =========================================================
+# ELECTRIC PAGE
+# =========================================================
+
+@app.route("/electric")
+def electric():
+
+    return """
+    <!DOCTYPE html>
+
+    <html>
+
+    <head>
+
+        <title>Electric Bills</title>
+
+        <style>
+
+            body {
+
+                margin: 0;
+                font-family: Arial, sans-serif;
+                display: flex;
+                background: #f4f7fb;
             }
 
-            .task-card h3 {
+            .sidebar {
 
-                margin-top: 0;
+                width: 250px;
+                min-height: 100vh;
+                background: #0f172a;
+                padding: 20px;
             }
 
-            .task-button {
+            .sidebar h2 {
 
-                padding: 12px 18px;
+                color: white;
+                margin-bottom: 30px;
+            }
+
+            .sidebar button {
+
+                width: 100%;
+                padding: 14px;
+                margin-bottom: 12px;
                 border: none;
                 border-radius: 8px;
-                background: #2563eb;
+                background: #1e293b;
                 color: white;
                 cursor: pointer;
+                font-size: 16px;
             }
 
-            .task-button:hover {
+            .sidebar button:hover {
+
+                background: #334155;
+            }
+
+            .main {
+
+                flex: 1;
+                padding: 40px;
+            }
+
+            .upload-box {
+
+                background: white;
+                padding: 30px;
+                border-radius: 16px;
+                box-shadow: 0 4px 10px rgba(0,0,0,0.08);
+                max-width: 700px;
+            }
+
+            .upload-button {
+
+                padding: 14px 20px;
+                background: #2563eb;
+                border: none;
+                color: white;
+                border-radius: 8px;
+                cursor: pointer;
+                font-size: 16px;
+            }
+
+            .upload-button:hover {
 
                 background: #1d4ed8;
             }
@@ -282,77 +369,41 @@ def tasks():
 
             </button>
 
-            <button onclick="window.location.href='/water'">
-
-                Water Bills
-
-            </button>
-
-            <button onclick="window.location.href='/gas'">
-
-                Gas Bills
-
-            </button>
-
-            <button onclick="window.location.href='/phone'">
-
-                Phone Bills
-
-            </button>
-
-            <button onclick="window.location.href='/reports'">
-
-                Reports
-
-            </button>
-
         </div>
 
         <div class="main">
 
-            <h1>Tasks Dashboard</h1>
+            <div class="upload-box">
 
-            <br>
+                <h1>Electric Bill Upload</h1>
 
-            <div class="task-card">
+                <br>
 
-                <h3>Review High Electric Bill</h3>
-
-                <p>
-
-                    Charges exceeded monthly average.
-
-                </p>
-
-                <button
-                    class="task-button"
-                    onclick="alert('Task Opened')"
+                <form
+                    action="/upload-electric"
+                    method="POST"
+                    enctype="multipart/form-data"
                 >
 
-                    Review Task
+                    <input
+                        type="file"
+                        name="files"
+                        multiple
+                        required
+                    >
 
-                </button>
+                    <br><br>
 
-            </div>
+                    <button
+                        class="upload-button"
+                        type="submit"
+                    >
 
-            <div class="task-card">
+                        Upload Bills
 
-                <h3>Missing Water Account Number</h3>
+                    </button>
 
-                <p>
-
-                    Manual review required for extraction.
-
-                </p>
-
-                <button
-                    class="task-button"
-                    onclick="alert('Opening Review')"
-                >
-
-                    Open Review
-
-                </button>
+                </form>
 
             </div>
 
@@ -365,83 +416,51 @@ def tasks():
 
 
 # =========================================================
-# ELECTRIC PAGE
+# UPLOAD ELECTRIC
 # =========================================================
 
-@app.route("/electric")
-def electric():
+@app.route("/upload-electric", methods=["POST"])
+def upload_electric():
 
-    return """
-    <h1 style="font-family: Arial; padding: 40px;">
+    uploaded_files = request.files.getlist("files")
 
-        Electric Bills Page
+    all_rows = []
 
-    </h1>
-    """
+    for file in uploaded_files:
 
+        if file.filename == "":
+            continue
 
-# =========================================================
-# WATER PAGE
-# =========================================================
+        filepath = Path(UPLOAD_FOLDER) / file.filename
 
-@app.route("/water")
-def water():
+        file.save(filepath)
 
-    return """
-    <h1 style="font-family: Arial; padding: 40px;">
+        try:
 
-        Water Bills Page
+            extracted_rows = extract_electric_bill(filepath)
 
-    </h1>
-    """
+            all_rows.extend(extracted_rows)
 
+        except Exception as e:
 
-# =========================================================
-# GAS PAGE
-# =========================================================
+            print("ERROR:", e)
 
-@app.route("/gas")
-def gas():
+    if not all_rows:
 
-    return """
-    <h1 style="font-family: Arial; padding: 40px;">
+        return """
+        <h1>No bill data extracted.</h1>
+        <br>
+        <a href='/electric'>Back</a>
+        """
 
-        Gas Bills Page
+    df = pd.DataFrame(all_rows)
 
-    </h1>
-    """
+    create_pretty_excel(df)
 
-
-# =========================================================
-# PHONE PAGE
-# =========================================================
-
-@app.route("/phone")
-def phone():
-
-    return """
-    <h1 style="font-family: Arial; padding: 40px;">
-
-        Phone Bills Page
-
-    </h1>
-    """
-
-
-# =========================================================
-# REPORTS PAGE
-# =========================================================
-
-@app.route("/reports")
-def reports():
-
-    return """
-    <h1 style="font-family: Arial; padding: 40px;">
-
-        Reports Page
-
-    </h1>
-    """
+    return send_file(
+        OUTPUT_FILE,
+        as_attachment=True
+    )
 
 
 # =========================================================
