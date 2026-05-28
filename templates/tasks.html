@@ -52,11 +52,9 @@
 
         .sidebar li {
 
-            padding: 14px 12px;
-            border-radius: 10px;
             margin-bottom: 10px;
-            cursor: pointer;
-            transition: 0.2s;
+            border-radius: 10px;
+            overflow: hidden;
         }
 
         .sidebar li:hover {
@@ -67,6 +65,15 @@
         .sidebar .active {
 
             background: #2563eb;
+        }
+
+        .sidebar a {
+
+            color: white;
+            text-decoration: none;
+            display: block;
+            width: 100%;
+            padding: 14px 12px;
         }
 
         /* =====================================================
@@ -184,11 +191,6 @@
             background: #f59e0b;
         }
 
-        .low {
-
-            background: #10b981;
-        }
-
         .pending {
 
             background: #2563eb;
@@ -268,49 +270,32 @@
 
         <ul>
 
-            <li onclick="window.location.href='/'">
-
-                Dashboard
-
+            <li>
+                <a href="/">Dashboard</a>
             </li>
 
-            <li onclick="window.location.href='/electric'">
-
-                Electric Bills
-
+            <li>
+                <a href="/electric">Electric Bills</a>
             </li>
 
-            <li onclick="window.location.href='/water'">
-
-                Water Bills
-
+            <li>
+                <a href="/water">Water Bills</a>
             </li>
 
-            <li onclick="window.location.href='/gas'">
-
-                Gas Bills
-
+            <li>
+                <a href="/gas">Gas Bills</a>
             </li>
 
-            <li onclick="window.location.href='/phone'">
-
-                Phone Bills
-
+            <li>
+                <a href="/phone">Phone Bills</a>
             </li>
 
-            <li onclick="window.location.href='/reports'">
-
-                Reports
-
+            <li>
+                <a href="/reports">Reports</a>
             </li>
 
-            <li
-                class="active"
-                onclick="window.location.href='/tasks'"
-            >
-
-                Tasks
-
+            <li class="active">
+                <a href="/tasks">Tasks</a>
             </li>
 
         </ul>
@@ -352,7 +337,7 @@
 
                 <h3>Pending Tasks</h3>
 
-                <p>12</p>
+                <p>0</p>
 
             </div>
 
@@ -360,7 +345,7 @@
 
                 <h3>High Priority</h3>
 
-                <p>3</p>
+                <p>0</p>
 
             </div>
 
@@ -368,7 +353,7 @@
 
                 <h3>Completed Today</h3>
 
-                <p>18</p>
+                <p>0</p>
 
             </div>
 
@@ -376,7 +361,7 @@
 
                 <h3>Manual Reviews</h3>
 
-                <p>5</p>
+                <p>0</p>
 
             </div>
 
@@ -421,7 +406,7 @@
 
                     </div>
 
-                    <button>
+                    <button onclick="alert('Task opened!')">
 
                         Review
 
@@ -466,7 +451,7 @@
 
                     </div>
 
-                    <button>
+                    <button onclick="alert('Task opened!')">
 
                         Open
 
@@ -511,54 +496,9 @@
 
                     </div>
 
-                    <button>
+                    <button onclick="alert('Task opened!')">
 
                         View
-
-                    </button>
-
-                </div>
-
-            </div>
-
-            <!-- TASK -->
-
-            <div class="task-card">
-
-                <div class="task-header">
-
-                    <div class="task-title">
-
-                        Duplicate Upload Warning
-
-                    </div>
-
-                    <div class="badge medium">
-
-                        MEDIUM
-
-                    </div>
-
-                </div>
-
-                <div class="task-details">
-
-                    Possible duplicate utility
-                    bill uploaded this morning.
-
-                </div>
-
-                <div class="task-footer">
-
-                    <div class="task-date">
-
-                        Yesterday
-
-                    </div>
-
-                    <button>
-
-                        Investigate
 
                     </button>
 
