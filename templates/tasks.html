@@ -54,27 +54,29 @@
         .sidebar li {
 
             margin-bottom: 10px;
+        }
+
+        .sidebar button {
+
+            width: 100%;
+            padding: 14px 12px;
+            background: transparent;
+            border: none;
+            color: white;
+            text-align: left;
             border-radius: 10px;
-            overflow: hidden;
+            cursor: pointer;
+            font-size: 16px;
             transition: 0.2s;
         }
 
-        .sidebar li:hover {
+        .sidebar button:hover {
 
             background: #1e293b;
         }
 
-        .sidebar a {
-
-            color: white;
-            text-decoration: none;
-            display: block;
-            width: 100%;
-            padding: 14px 12px;
-        }
-
         /* =====================================================
-           MAIN CONTENT
+           MAIN
         ===================================================== */
 
         .main {
@@ -213,7 +215,7 @@
             color: #6b7280;
         }
 
-        button {
+        .task-action {
 
             border: none;
             background: #2563eb;
@@ -223,7 +225,7 @@
             cursor: pointer;
         }
 
-        button:hover {
+        .task-action:hover {
 
             background: #1d4ed8;
         }
@@ -243,31 +245,45 @@
         <ul>
 
             <li>
-                <a href="/">Dashboard</a>
+                <button onclick="window.location.href='/'">
+                    Dashboard
+                </button>
             </li>
 
             <li>
-                <a href="/electric">Electric Bills</a>
+                <button onclick="window.location.href='/electric'">
+                    Electric Bills
+                </button>
             </li>
 
             <li>
-                <a href="/water">Water Bills</a>
+                <button onclick="window.location.href='/water'">
+                    Water Bills
+                </button>
             </li>
 
             <li>
-                <a href="/gas">Gas Bills</a>
+                <button onclick="window.location.href='/gas'">
+                    Gas Bills
+                </button>
             </li>
 
             <li>
-                <a href="/phone">Phone Bills</a>
+                <button onclick="window.location.href='/phone'">
+                    Phone Bills
+                </button>
             </li>
 
             <li>
-                <a href="/reports">Reports</a>
+                <button onclick="window.location.href='/reports'">
+                    Reports
+                </button>
             </li>
 
             <li>
-                <a href="/tasks">Tasks</a>
+                <button onclick="window.location.href='/tasks'">
+                    Tasks
+                </button>
             </li>
 
         </ul>
@@ -371,7 +387,10 @@
 
                     </div>
 
-                    <button onclick="alert('Task opened!')">
+                    <button
+                        class="task-action"
+                        onclick="alert('Task opened!')"
+                    >
 
                         Review
 
@@ -413,7 +432,10 @@
 
                     </div>
 
-                    <button onclick="alert('Task opened!')">
+                    <button
+                        class="task-action"
+                        onclick="alert('Task opened!')"
+                    >
 
                         Open
 
@@ -455,7 +477,10 @@
 
                     </div>
 
-                    <button onclick="alert('Task opened!')">
+                    <button
+                        class="task-action"
+                        onclick="alert('Task opened!')"
+                    >
 
                         View
 
