@@ -48,6 +48,7 @@
         .sidebar ul {
 
             list-style: none;
+            padding: 0;
         }
 
         .sidebar li {
@@ -55,16 +56,12 @@
             margin-bottom: 10px;
             border-radius: 10px;
             overflow: hidden;
+            transition: 0.2s;
         }
 
         .sidebar li:hover {
 
             background: #1e293b;
-        }
-
-        .sidebar .active {
-
-            background: #2563eb;
         }
 
         .sidebar a {
@@ -139,7 +136,7 @@
         }
 
         /* =====================================================
-           TASKS GRID
+           TASKS
         ===================================================== */
 
         .tasks-grid {
@@ -186,11 +183,6 @@
             background: #dc2626;
         }
 
-        .medium {
-
-            background: #f59e0b;
-        }
-
         .pending {
 
             background: #2563eb;
@@ -229,29 +221,11 @@
             padding: 10px 16px;
             border-radius: 10px;
             cursor: pointer;
-            transition: 0.2s;
         }
 
         button:hover {
 
             background: #1d4ed8;
-        }
-
-        /* =====================================================
-           RESPONSIVE
-        ===================================================== */
-
-        @media (max-width: 900px) {
-
-            body {
-
-                flex-direction: column;
-            }
-
-            .sidebar {
-
-                width: 100%;
-            }
         }
 
     </style>
@@ -260,9 +234,7 @@
 
 <body>
 
-    <!-- =====================================================
-         SIDEBAR
-    ====================================================== -->
+    <!-- SIDEBAR -->
 
     <div class="sidebar">
 
@@ -294,7 +266,7 @@
                 <a href="/reports">Reports</a>
             </li>
 
-            <li class="active">
+            <li>
                 <a href="/tasks">Tasks</a>
             </li>
 
@@ -302,13 +274,9 @@
 
     </div>
 
-    <!-- =====================================================
-         MAIN CONTENT
-    ====================================================== -->
+    <!-- MAIN -->
 
     <div class="main">
-
-        <!-- TOPBAR -->
 
         <div class="topbar">
 
@@ -371,8 +339,6 @@
 
         <div class="tasks-grid">
 
-            <!-- TASK -->
-
             <div class="task-card">
 
                 <div class="task-header">
@@ -393,8 +359,7 @@
 
                 <div class="task-details">
 
-                    Electric charges for Traffic Tower
-                    exceeded monthly average by 42%.
+                    Electric charges exceeded monthly average.
 
                 </div>
 
@@ -416,8 +381,6 @@
 
             </div>
 
-            <!-- TASK -->
-
             <div class="task-card">
 
                 <div class="task-header">
@@ -438,8 +401,7 @@
 
                 <div class="task-details">
 
-                    Water bill extraction missing
-                    account number field.
+                    Water bill extraction missing account number.
 
                 </div>
 
@@ -461,8 +423,6 @@
 
             </div>
 
-            <!-- TASK -->
-
             <div class="task-card">
 
                 <div class="task-header">
@@ -483,8 +443,7 @@
 
                 <div class="task-details">
 
-                    Finance department report
-                    exported successfully.
+                    Finance report exported successfully.
 
                 </div>
 
